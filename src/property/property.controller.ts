@@ -19,13 +19,15 @@ import { ZodValidationPipe } from './pipes/zodValidationPipe';
 import { createPropertySchema, type CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeader } from './pipes/request-header';
+import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
-    // @Get()
-    // findAll() {
-    //   return 'All property';
-    // }
+    constructor(private propertyService: PropertyService) { }
+    @Get()
+    findAll() {
+        return this.propertyService.findAll();
+    }
 
     // @Get(':id')
     // findOne(@Param('id') id: string) {
@@ -45,9 +47,7 @@ export class PropertyController {
 
     @Get(':id')
     findById(@Param('id', ParseIntPipe) id: number, @Query('short', ParseBoolPipe) short) {
-        console.log(typeof id);
-        console.log(typeof short);
-        return id;
+        return this.propertyService.findOne();
     }
 
     @Post()
@@ -56,7 +56,17 @@ export class PropertyController {
         @Body()
         body: CreatePropertyZodDto,
     ) {
-        return body;
+        return this.propertyService.create();
+    }
+
+    @Patch(':id')
+    update(
+        @Param('id', ParseIdPipe) id,
+        @Body()
+        body: CreatePropertyDto,
+        @Headers('host') header: string,
+    ) {
+        return header;
     }
 
     // @Patch(':id')
@@ -68,14 +78,14 @@ export class PropertyController {
     //     return body;
     // }
 
-    @Patch(':id')
-    updateCustomPipes(
-        @Param('id', ParseIdPipe) id,
-        @Body()
-        body: CreatePropertyDto,
-        @RequestHeader(new ValidationPipe({ whitelist: true, validateCustomDecorators: true }))
-        header: HeadersDto,
-    ) {
-        return header;
-    }
+    // @Patch(':id')
+    // updateCustomPipes(
+    //     @Param('id', ParseIdPipe) id,
+    //     @Body()
+    //     body: CreatePropertyDto,
+    //     @RequestHeader(new ValidationPipe({ whitelist: true, validateCustomDecorators: true }))
+    //     header: HeadersDto,
+    // ) {
+    //     return this.propertyService.update();
+    // }
 }
