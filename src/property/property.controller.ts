@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    Headers,
     Param,
     ParseBoolPipe,
     ParseIntPipe,
@@ -16,6 +17,8 @@ import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdpipes';
 import { ZodValidationPipe } from './pipes/zodValidationPipe';
 import { createPropertySchema, type CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
+import { HeadersDto } from './dto/headers.dto';
+import { RequestHeader } from './pipes/request-header';
 
 @Controller('property')
 export class PropertyController {
@@ -56,21 +59,23 @@ export class PropertyController {
         return body;
     }
 
-    @Patch(':id')
-    update(
-        @Param() { id }: IdParamDto,
-        @Body()
-        body: CreatePropertyDto,
-    ) {
-        return body;
-    }
+    // @Patch(':id')
+    // update(
+    //     @Param() { id }: IdParamDto,
+    //     @Body()
+    //     body: CreatePropertyDto,
+    // ) {
+    //     return body;
+    // }
 
     @Patch(':id')
     updateCustomPipes(
         @Param('id', ParseIdPipe) id,
         @Body()
         body: CreatePropertyDto,
+        @RequestHeader(new ValidationPipe({ whitelist: true, validateCustomDecorators: true }))
+        header: HeadersDto,
     ) {
-        return body;
+        return header;
     }
 }
