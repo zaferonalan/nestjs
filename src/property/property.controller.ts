@@ -8,10 +8,12 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    UsePipes,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
-import type { CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
-import type { updatePropertyZodDto } from './dto/updatePropertyZod.dto';
+import { createPropertySchema, type CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
+import { updatePropertySchema, type updatePropertyZodDto } from './dto/updatePropertyZod.dto';
+import { ZodValidationPipe } from 'src/pipes/zodValidationPipe';
 
 @Controller('property')
 export class PropertyController {
@@ -28,11 +30,13 @@ export class PropertyController {
     }
 
     @Post()
+    @UsePipes(new ZodValidationPipe(createPropertySchema))
     create(@Body() dto: CreatePropertyZodDto) {
         return this.propertyService.create(dto);
     }
 
     @Patch(':id')
+    @UsePipes(new ZodValidationPipe(updatePropertySchema))
     update(
         @Param('id', ParseIntPipe) id: number,
         @Body()
