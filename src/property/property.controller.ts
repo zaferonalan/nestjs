@@ -1,18 +1,17 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Headers,
     Param,
-    ParseBoolPipe,
     ParseIntPipe,
     Patch,
     Post,
-    Query,
 } from '@nestjs/common';
-import { CreatePropertyDto } from './dto/createProperty.dto';
 import { PropertyService } from './property.service';
 import type { CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
+import type { updatePropertyZodDto } from './dto/updatePropertyZod.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -25,7 +24,7 @@ export class PropertyController {
 
     @Get(':id')
     findById(@Param('id', ParseIntPipe) id: number) {
-        return this.propertyService.findOne();
+        return this.propertyService.findOne(id);
     }
 
     @Post()
@@ -37,9 +36,13 @@ export class PropertyController {
     update(
         @Param('id', ParseIntPipe) id: number,
         @Body()
-        body: CreatePropertyDto,
-        @Headers('host') header: string,
+        body: updatePropertyZodDto,
     ) {
-        return this.propertyService.update();
+        return this.propertyService.update(id, body);
+    }
+
+    @Delete(':id')
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.propertyService.delete(id);
     }
 }
