@@ -14,8 +14,22 @@ datasource db {
 }
 
 model Property {
-  id              Int @id @default(autoincrement())
+  id              Int              @id @default(autoincrement())
   name            String
   description     String
-  price           Int 
+  price           Int
+  propertyFeature PropertyFeature?
+}
+
+model PropertyFeature {
+  id              Int      @id @default(autoincrement())
+  bedrooms        Int
+  bathrooms       Int
+  parkingSpots    Int
+  area            Int
+  hasSwimmingPool Boolean
+  hasGardenYard   Boolean
+  hasBalcony      Boolean
+  propertyId      Int      @unique //! Birebir ilişki Property ile
+  propert         Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
