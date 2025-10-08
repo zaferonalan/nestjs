@@ -1,4 +1,4 @@
-import z, { int } from 'zod';
+import z from 'zod';
 
 export const createPropertyFeatureSchema = z
     .object({

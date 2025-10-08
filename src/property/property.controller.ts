@@ -8,20 +8,22 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    Query,
     UsePipes,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { createPropertySchema, type CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
 import { updatePropertySchema, type updatePropertyZodDto } from './dto/updatePropertyZod.dto';
 import { ZodValidationPipe } from 'src/pipes/zodValidationPipe';
+import type { PaginationZodDto } from './dto/paginationZod.dto';
 
 @Controller('property')
 export class PropertyController {
     constructor(private propertyService: PropertyService) { }
 
     @Get()
-    findAll() {
-        return this.propertyService.findAll();
+    findAll(@Query() query: PaginationZodDto) {
+        return this.propertyService.findAll(query);
     }
 
     @Get(':id')

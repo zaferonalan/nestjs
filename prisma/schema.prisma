@@ -19,6 +19,8 @@ model Property {
   description     String
   price           Int
   propertyFeature PropertyFeature?
+  user            User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int?
 }
 
 model PropertyFeature {
@@ -31,5 +33,15 @@ model PropertyFeature {
   hasGardenYard   Boolean
   hasBalcony      Boolean
   propertyId      Int      @unique //! Birebir ilişki Property ile
-  propert         Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  property        Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String     @unique
+  avatarUrl String
+  createdAt DateTime   @default(now())
+  property  Property[]
 }

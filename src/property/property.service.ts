@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePropertyZodDto } from './dto/createPropertyZod.tdo';
 import { updatePropertyZodDto } from './dto/updatePropertyZod.dto';
+import { PaginationZodDto, paginationZodSchema } from './dto/paginationZod.dto';
 
 @Injectable()
 export class PropertyService {
@@ -18,7 +19,9 @@ export class PropertyService {
 
         return property;
     }
-    async findAll() {
+    async findAll(query: PaginationZodDto) {
+        const pagination = paginationZodSchema.parse(query);
+        const { limit, skip } = pagination;
         const propertyAll = await this.prisma.property.findMany({
             select: {
                 id: true,
@@ -26,6 +29,8 @@ export class PropertyService {
                 description: true,
                 price: true,
             },
+            take: limit,
+            skip: skip,
         });
 
         if (propertyAll.length == 0) throw new NotFoundException();

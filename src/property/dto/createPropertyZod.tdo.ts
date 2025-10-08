@@ -8,4 +8,4 @@ export const createPropertySchema = z
     })
     .required();
 
-export type CreatePropertyZodDto = Readonly<z.infer<typeof createPropertySchema>>;
+export type CreatePropertyZodDto = z.infer<typeof createPropertySchema>;
