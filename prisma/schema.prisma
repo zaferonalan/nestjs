@@ -41,7 +41,8 @@ model User {
   firstName String
   lastName  String
   email     String     @unique
-  avatarUrl String
+  avatarUrl String?
   createdAt DateTime   @default(now())
+  password  String
   property  Property[]
 }
