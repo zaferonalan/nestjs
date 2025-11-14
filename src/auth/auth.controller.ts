@@ -11,9 +11,11 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     login(@Request() req: AuthenticatedRequestZodDto) {
+        const token = this.authService.login(req.user.id);
         return {
             message: 'Login Successfully',
-            user: req.user,
+            user: req.user.id,
+            token,
         };
     }
 }
