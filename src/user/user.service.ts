@@ -36,6 +36,19 @@ export class UserService {
         });
     }
 
+    async findOne(id: number) {
+        return this.prisma.user.findFirst({
+            where: {
+                id,
+            },
+            select: {
+                firstName: true,
+                lastName: true,
+                avatarUrl: true,
+            },
+        });
+    }
+
     // findAll() {
     //     return `This action returns all user`;
     // }
