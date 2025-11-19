@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import z from 'zod';
 
 export const authenticatedRequestSchema = z.object({
@@ -6,4 +7,4 @@ export const authenticatedRequestSchema = z.object({
     }),
 });
 
-export type AuthenticatedRequestZodDto = z.infer<typeof authenticatedRequestSchema>;
+export type AuthenticatedRequestZodDto = Request & z.infer<typeof authenticatedRequestSchema>;
