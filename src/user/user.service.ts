@@ -54,6 +54,7 @@ export class UserService {
                 firstName: true,
                 lastName: true,
                 avatarUrl: true,
+                hashedRefreshToken: true,
             },
         });
     }
