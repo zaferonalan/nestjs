@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequestZodDto } from './dto/login-request.dto';
 import { LocalAuthGuard } from './guards/local-auth/local-guard.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -24,5 +25,11 @@ export class AuthController {
     @Post('refresh')
     refreshToken(@Request() req: AuthenticatedRequestZodDto) {
         return this.authService.refreshToken(req.user.id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('signout')
+    async signOut(@Request() req: AuthenticatedRequestZodDto) {
+        await this.authService.singOut(req.user.id);
     }
 }
