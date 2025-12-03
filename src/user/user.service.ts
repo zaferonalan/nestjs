@@ -8,6 +8,15 @@ import bcrypt from 'bcrypt';
 export class UserService {
     constructor(private readonly prisma: PrismaService) { }
 
+    async updateHashedRefreshToken(userId: number, hashedRefreshToken: string) {
+        return await this.prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: { hashedRefreshToken },
+        });
+    }
+
     async create(createUserDto: CreateUserZodDto) {
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
         const user = await this.prisma.user.create({

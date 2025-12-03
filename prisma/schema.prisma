@@ -37,12 +37,14 @@ model PropertyFeature {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String     @unique
-  avatarUrl String?
-  createdAt DateTime   @default(now())
-  password  String
-  property  Property[]
+  id                 Int      @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String   @unique
+  avatarUrl          String?
+  createdAt          DateTime @default(now())
+  password           String
+  hashedRefreshToken String?
+
+  property Property[]
 }
