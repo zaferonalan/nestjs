@@ -45,6 +45,13 @@ model User {
   createdAt          DateTime @default(now())
   password           String
   hashedRefreshToken String?
+  role               Role     @default(USER)
 
   property Property[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  EDITOR
 }

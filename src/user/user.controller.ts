@@ -1,8 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    Req,
+    UseGuards,
+    Request,
+    ParseIntPipe,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import type { CreateUserZodDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 import { getUserProfileSchema } from './dto/getProfile-user.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
+import type { AuthenticatedRequest } from './type/AuthenticatedRequest';
 // import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
@@ -16,9 +31,15 @@ export class UserController {
 
     @UseGuards(JwtAuthGuard)
     @Get('profile')
-    async getProfile(@Req() req: Request) {
+    async getProfile(@Request() req: AuthenticatedRequest) {
         const user = await this.userService.findOne(req.user.id);
         return getUserProfileSchema.parse(user);
+    }
+
+    @Roles(Role.ADMIN, Role.EDITOR)
+    @Delete(':id')
+    async remove(@Param('id', ParseIntPipe) id: number) {
+        return await this.userService.remove(id);
     }
 
     // @Get()
