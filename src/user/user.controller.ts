@@ -18,6 +18,7 @@ import { getUserProfileSchema } from './dto/getProfile-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import type { AuthenticatedRequest } from './type/AuthenticatedRequest';
+import { RolGuard } from 'src/auth/guards/rol/rol.guard';
 // import { UpdateUserDto } from './dto/update-user.dto';
 
 Roles(Role.USER);
@@ -38,6 +39,8 @@ export class UserController {
     }
 
     @Roles(Role.ADMIN)
+    @UseGuards(RolGuard)
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return await this.userService.remove(id);

@@ -51,10 +51,12 @@ export class UserService {
                 id,
             },
             select: {
+                id: true,
                 firstName: true,
                 lastName: true,
                 avatarUrl: true,
                 hashedRefreshToken: true,
+                role: true,
             },
         });
     }
