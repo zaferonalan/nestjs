@@ -20,6 +20,7 @@ import { Role } from 'src/auth/enums/role.enum';
 import type { AuthenticatedRequest } from './type/AuthenticatedRequest';
 // import { UpdateUserDto } from './dto/update-user.dto';
 
+Roles(Role.USER);
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) { }
@@ -36,7 +37,7 @@ export class UserController {
         return getUserProfileSchema.parse(user);
     }
 
-    @Roles(Role.ADMIN, Role.EDITOR)
+    @Roles(Role.ADMIN)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return await this.userService.remove(id);
