@@ -4,11 +4,12 @@ import type { AuthenticatedRequestZodDto } from './dto/login-request.dto';
 import { LocalAuthGuard } from './guards/local-auth/local-guard.guard';
 import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
-
+    @Public()
     @UseGuards(LocalAuthGuard)
     @Post('login')
     login(@Request() req: AuthenticatedRequestZodDto) {
