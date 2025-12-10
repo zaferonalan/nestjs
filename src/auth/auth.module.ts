@@ -12,6 +12,7 @@ import { RefreshJwtStrategy } from './strategies/refresh-strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth/jwt-auth.guard';
 import { RolGuard } from './guards/rol/rol.guard';
+import googleOauthConfig from './config/google-oauth.config';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { RolGuard } from './guards/rol/rol.guard';
         JwtModule.registerAsync(jwtConfig.asProvider()),
         ConfigModule.forFeature(jwtConfig),
         ConfigModule.forFeature(refreshJwtConfig),
+        ConfigModule.forFeature(googleOauthConfig),
     ],
     controllers: [AuthController],
     providers: [
