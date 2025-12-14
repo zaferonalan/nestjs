@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequestZodDto } from './dto/login-request.dto';
 import { LocalAuthGuard } from './guards/local-auth/local-guard.guard';
@@ -43,5 +43,8 @@ export class AuthController {
     @Public()
     @UseGuards(GoogleAuthGuard)
     @Get('google/callback')
-    googleCallback() { }
+    googleCallback(@Req() req, @Res() res) {
+        const response = await this.authService.login(req.user.id);
+        res.redirect(`http://localhost:5173?token=${response.accessToken}`);
+    }
 }
